@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import IconButton from '../template/iconButton';
 
@@ -18,7 +19,7 @@ const renderRows = (list, handleRemove, handleMarkAsDone, handleMarkAsPending) =
   });
 };
 
-export default props => {
+const TodoList = props => {
   const list = props.list || [];
 
   return (
@@ -35,3 +36,6 @@ export default props => {
     </table>
   )
 }
+
+const mapStateToProps = state => ({list: state.todo.list});
+export default connect(mapStateToProps)(TodoList);
