@@ -16,10 +16,31 @@ export const search = () => {
   };
 };
 
-export const add = (description) => {
+export const add = description => {
   return dispatch => {
     axios.post(URL, { description })
       .then(result => dispatch({ type: 'TODO_ADDED', payload: result.data }))
+      .then(() => dispatch(search()));
+  };
+};
+
+export const markAsDone = todo => {
+  return dispatch => {
+    axios.put(`${URL}/${todo._id}`, { done: true })
+      .then(() => dispatch(search()));
+  };
+};
+
+export const markAsPending = todo => {
+  return dispatch => {
+    axios.put(`${URL}/${todo._id}`, { done: false })
+      .then(() => dispatch(search()));
+  };
+};
+
+export const remove = todo => {
+  return dispatch => {
+    axios.delete(`${URL}/${todo._id}`)
       .then(() => dispatch(search()));
   };
 };
