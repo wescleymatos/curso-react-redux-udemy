@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import IconButton from '../template/iconButton';
+import { markAsDone, markAsPending, remove } from './todoActions';
 
 
 const renderRows = (list, handleRemove, handleMarkAsDone, handleMarkAsPending) => {
@@ -18,7 +21,7 @@ const renderRows = (list, handleRemove, handleMarkAsDone, handleMarkAsPending) =
   });
 };
 
-export default props => {
+const TodoList = props => {
   const list = props.list || [];
 
   return (
@@ -30,8 +33,12 @@ export default props => {
         </tr>
       </thead>
       <tbody>
-        { renderRows(list, props.handleRemove, props.handleMarkAsDone, props.handleMarkAsPending) }
+        { renderRows(list, props.remove, props.markAsDone, props.markAsPending) }
       </tbody>
     </table>
   )
 }
+
+const mapStateToProps = state => ({list: state.todo.list});
+const mapDispatchToProps = dispatch => bindActionCreators({ markAsDone, markAsPending, remove }, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
